@@ -1,0 +1,70 @@
+﻿@using MessageQueueComponent.Interface
+
+@implements IDisposable
+
+@inject IMessageQueueProvider prvQueue
+@inject MessageStyle msgStyle
+
+@if (this.prvQueue.HasPendingMessage)
+{
+    <div class=@msgStyle.MessageContainerClassName>
+        @foreach (IMessage msgActual in prvQueue.GetPendingMessage())
+        {
+            <div class=@msgStyle.MessageClassName role="alert" aria-live="assertive" aria-atomic="true">
+                <div class=@GetMessageHeaderClassName(msgActual)>
+                    <strong class=@msgStyle.MessageHeaderTitleClassName>@msgActual.Header</strong>
+                    <button class=@msgStyle.CloseButtonClassName aria-label="Close" @onclick="() => this.RemoveMessage(msgActual)">x</button>
+                </div>
+                <div class=@msgStyle.MessageBodyClassName>
+                    @msgActual.Content
+                </div>
+                <div class=@msgStyle.MessageFooterClassName>
+                    <progress aria-label="Lifetime" value="@(msgActual.ElapsedTime.TotalMilliseconds)" max="@(msgActual.Lifetime.TotalMilliseconds)" style="width:100%"></progress>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        prvQueue.QueueChanged += QueueChanged;
+        prvQueue.TimerElapsed += QueueChanged;
+    }
+
+    private void RemoveMessage(IMessage msgActual)
+    {
+        prvQueue.RemoveMessage(msgActual);
+    }
+
+    private void QueueChanged(object? sender, EventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    private string GetMessageHeaderClassName(IMessage msgActual)
+    {
+        switch (msgActual.Type)
+        {
+            case MessageType.Information:
+                return msgStyle.MessageHeaderInformationClassName;
+            case MessageType.Success:
+                return msgStyle.MessageHeaderSuccessClassName;
+            case MessageType.Warning:
+                return msgStyle.MessageHeaderWarningClassName;
+            case MessageType.Error:
+                return msgStyle.MessageHeaderErrorClassName;
+            default:
+                return msgStyle.MessageHeaderFallbackClassName;
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        prvQueue.QueueChanged -= QueueChanged;
+        prvQueue.TimerElapsed -= QueueChanged;
+    }
+
+    // see https://www.codeproject.com/Articles/5322875/A-Blazor-Bootstrap-Toaster
+}
