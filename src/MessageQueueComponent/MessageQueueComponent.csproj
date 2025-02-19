@@ -1,11 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
+    <AssemblyName>MessageQueueComponent</AssemblyName>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup>
+	<PackageId>$(AssemblyName)</PackageId>
+	<PackageVersion>0.1.0</PackageVersion>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageTags>Blazor Webassembly, Message, Queue</PackageTags>
+	<Description>Component to add a message queue to a Blazor WebAssembly.</Description>
+	<RepositoryUrl>https://github.com/Hlyrnir/MessageQueueComponent</RepositoryUrl>
+	<Authors>Hlyrnir</Authors>
+  </PropertyGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -13,10 +23,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.11" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

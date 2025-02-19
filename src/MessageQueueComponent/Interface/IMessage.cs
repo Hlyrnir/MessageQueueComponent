@@ -1,4 +1,6 @@
-﻿namespace MessageQueueComponent.Interface
+﻿using System;
+
+namespace MessageQueueComponent.Interface
 {
     public interface IMessage
     {

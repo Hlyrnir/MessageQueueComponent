@@ -1,4 +1,7 @@
-﻿namespace MessageQueueComponent.Interface
+﻿using System;
+using System.Collections.Generic;
+
+namespace MessageQueueComponent.Interface
 {
     public interface IMessageQueueProvider
     {

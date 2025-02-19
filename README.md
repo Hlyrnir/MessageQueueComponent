@@ -1,3 +1,3 @@
 # MessageQueueComponent
 
-Blazor Component - under construction
+Component to add a message queue to a Blazor WebAssembly.
